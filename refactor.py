@@ -4,7 +4,7 @@ from tqdm import tqdm
 from git import Repo
 
 # Set up OpenAI API key
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 openai.api_key = OPENAI_API_KEY
 
 # Define file extensions to check
