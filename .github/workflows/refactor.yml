@@ -1,0 +1,50 @@
+name: Auto Refactor with SonarCloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * 1"  # Runs every Monday
+
+jobs:
+  analyze-and-refactor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: pip install openai GitPython requests tqdm
+
+      - name: Run Auto-Refactor Script
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python refactor.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "yuvi-crypto"
+          git config --global user.email "yuvaraj.gajalajamgam@students.iiit.ac.in"
+          git checkout -b refactored-branch
+          git add .
+          git commit -m "Automated refactoring using GPT-4o"
+          git push origin refactored-branch
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: refactored-branch
+          title: "Automated Refactoring"
+          body: "This PR contains automated refactoring based on SonarCloud analysis."
+
