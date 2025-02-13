@@ -1,4 +1,4 @@
-name: Auto Refactor with SonarCloud
+name: Auto Refactor with OPEN AI
 
 on:
   push:
@@ -46,5 +46,5 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: refactored-branch
           title: "Automated Refactoring"
-          body: "This PR contains automated refactoring based on SonarCloud analysis."
+          body: "This PR contains automated refactoring based on OPEN AI GPT-4o LLM analysis."
 
