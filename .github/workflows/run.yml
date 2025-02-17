@@ -32,18 +32,25 @@ jobs:
         run: python refactor.py
 
       - name: Commit and Push Changes
+        id: commit-push
         run: |
           git config --global user.name "yuvi-crypto"
           git config --global user.email "yuvaraj.gajalajamgam@students.iiit.ac.in"
           git add .
-          git commit -m "Automated refactoring using GPT-4o"
-          git push origin master
+          if ! git diff --cached --quiet; then
+            git commit -m "Automated refactoring using GPT-4o"
+            git push origin master
+            echo "changes_detected=true" >> $GITHUB_ENV
+          else
+            echo "No changes detected, skipping commit and push."
+            echo "changes_detected=false" >> $GITHUB_ENV
+          fi
 
       - name: Create Pull Request
+        if: env.changes_detected == 'true'
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GIT_TOKEN }}
           branch: refactored-branch
           title: "Automated Refactoring"
           body: "This PR contains automated refactoring based on OPEN AI GPT-4o LLM analysis."
-
