@@ -35,7 +35,7 @@ jobs:
         run: |
           git config --global user.name "yuvi-crypto"
           git config --global user.email "yuvaraj.gajalajamgam@students.iiit.ac.in"
-          git checkout -b refactored-branch
+          git checkout -b master
           git add .
           git commit -m "Automated refactoring using GPT-4o"
           git push origin master
